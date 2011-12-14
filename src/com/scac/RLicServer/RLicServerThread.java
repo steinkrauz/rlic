@@ -1,9 +1,9 @@
 package com.scac.RLicServer;
 
 import java.net.*;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.io.*;
-import com.scac.RLicProto.*;
 
 public class RLicServerThread extends Thread {
 	private Socket socket = null;
@@ -17,24 +17,31 @@ public class RLicServerThread extends Thread {
 
 		try {
 			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					socket.getInputStream()));
-
+			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String inputLine, outputLine;
+			
 			String IP = ((InetSocketAddress) socket.getRemoteSocketAddress()).getHostString();
-			System.out.println(IP);
+			RLicDataHolder dh = RLicDataHolder.getInstance();
+			ArrayList<RLicToken> tkns = dh.getCfg().getTokens();
+			RLicToken tkn = null;
+			for (RLicToken tk : tkns){
+				if (IP.startsWith(tk.getNetMask()))
+					tkn = tk;
+			}
+			
 			Logger log = Logger.getLogger("com.scac.rlic");
-			RLicProtocol kkp = new RLicProtocol();
-			outputLine = kkp.processInput(null);
-			out.println(outputLine);
+
 			try {
-				while ((inputLine = in.readLine()) != null) {
-					log.info("Client talked");
-					
-					outputLine = kkp.processInput(inputLine);
+				if ((inputLine = in.readLine()) != null) {
+					log.info(inputLine);
+					outputLine = "ACCESS DENIED";
+					if (tkn != null) {
+						for (String name : tkn.getUsers()) {
+							if (name.equals(inputLine))
+								outputLine = "ACCESS GRANTED";
+						}
+					}
 					out.println(outputLine);
-					if (outputLine.equals("Bye"))
-						break;
 				}
 				out.close();
 				in.close();
