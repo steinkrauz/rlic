@@ -33,6 +33,7 @@ public class RLicServerThread extends Thread {
 
 			try {
 				if ((inputLine = in.readLine()) != null) {
+					if (inputLine.equals("QUIT")) System.exit(0);
 					log.info(inputLine);
 					outputLine = "ACCESS DENIED";
 					if (tkn != null) {

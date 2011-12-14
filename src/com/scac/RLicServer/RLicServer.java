@@ -48,9 +48,7 @@ public class RLicServer {
 	
 	private static void configLog() throws IOException {
 		FileHandler fh = new FileHandler(cfg.getLogPath());
-		// TODO: make more appropriate formatter here
-		SimpleFormatter sf = new SimpleFormatter();
-		fh.setFormatter(sf);
+		fh.setFormatter(new RLicLogFormatter());
 		Logger log = Logger.getLogger("com.scac.rlic");
 		log.setLevel(Level.ALL);
 		log.addHandler(fh);
