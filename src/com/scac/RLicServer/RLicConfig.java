@@ -9,7 +9,7 @@ public final class RLicConfig
    /** Constructor. */
    public RLicConfig()
    {
-	   _Tokens = new ArrayList<>();
+	   _Tokens = new ArrayList<RLicToken>();
    }
 
    private int _ServerPort;
