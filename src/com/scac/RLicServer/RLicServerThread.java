@@ -20,7 +20,7 @@ public class RLicServerThread extends Thread {
 			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String inputLine, outputLine;
 			
-			String IP = ((InetSocketAddress) socket.getRemoteSocketAddress()).getHostString();
+			String IP = ((InetSocketAddress) socket.getRemoteSocketAddress()).getAddress().getHostAddress();
 			RLicDataHolder dh = RLicDataHolder.getInstance();
 			ArrayList<RLicToken> tkns = dh.getCfg().getTokens();
 			RLicToken tkn = null;
