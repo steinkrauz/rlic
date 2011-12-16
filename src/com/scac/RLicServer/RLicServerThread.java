@@ -2,8 +2,9 @@ package com.scac.RLicServer;
 
 import java.net.*;
 import java.util.ArrayList;
-import java.util.logging.*;
+//import java.util.logging.*;
 import java.io.*;
+import org.apache.log4j.*;
 
 public class RLicServerThread extends Thread {
 	private Socket socket = null;
@@ -41,16 +42,16 @@ public class RLicServerThread extends Thread {
 						}
 					}
 					out.println(outputLine);
-					log.log(Level.INFO,"{0};{1};{2}",new String[]{IP,inputLine,outputLine});
+					log.info(String.format("%1$s;%2$s;%3$s",(Object[])new String[]{IP,inputLine,outputLine}));
 				}
 				out.close();
 				in.close();
 				socket.close();
 			} catch (Exception ex) {
 				if (ex.getClass().getName().equals("java.net.SocketException")) {
-					log.warning("Connection terminated");
+					log.warn("Connection terminated");
 				} else
-					log.warning(ex.getMessage());
+					log.warn(ex.getMessage());
 			}
 			
 
