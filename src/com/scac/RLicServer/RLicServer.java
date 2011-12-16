@@ -47,10 +47,13 @@ public class RLicServer {
 	}
 	
 	private static void configLog() throws IOException {
-		FileHandler fh = new FileHandler(cfg.getLogPath());
+		FileHandler fh = new FileHandler(cfg.getLogPath(),100,9999,false);
 		fh.setFormatter(new RLicLogFormatter());
 		Logger log = Logger.getLogger("com.scac.rlic");
 		log.setLevel(Level.ALL);
 		log.addHandler(fh);
+		log.setUseParentHandlers(false);
+		Logger rootLogger = Logger.getLogger(""); 
+		rootLogger.removeHandler(rootLogger.getHandlers()[0]); 
 	}
 }
