@@ -2,7 +2,6 @@ package com.scac.RLicServer;
 
 import java.net.*;
 import java.util.ArrayList;
-//import java.util.logging.*;
 import java.io.*;
 import org.apache.log4j.*;
 
