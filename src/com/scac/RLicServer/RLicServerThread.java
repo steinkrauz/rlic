@@ -3,6 +3,7 @@ package com.scac.RLicServer;
 import java.net.*;
 import java.util.ArrayList;
 import java.io.*;
+
 import org.apache.log4j.*;
 
 public class RLicServerThread extends Thread {
@@ -19,7 +20,7 @@ public class RLicServerThread extends Thread {
 		try {
 			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			String inputLine, outputLine;
+			String inputLine, outputLine = null;
 			
 			RLicToken tkn = getTokenByAddress();
 			
@@ -27,18 +28,22 @@ public class RLicServerThread extends Thread {
 
 			try {
 				if ((inputLine = in.readLine()) != null) {
-					if (inputLine.equals("QUIT")) {
-						socket.close();
-						System.exit(0);
-					}
-					outputLine = "ACCESS DENIED";
-					if (tkn != null) {
-						for (String name : tkn.getUsers()) {
-							if (name.equals(inputLine)){
-								outputLine = "ACCESS GRANTED";
-								break;
-							}
+					while (true) {
+						if (inputLine.startsWith("USER")) {
+							outputLine = checkUser(inputLine, tkn);
+							break;
 						}
+						if (inputLine.equals("QUIT")) {
+							socket.close();
+							System.exit(0);
+							break;
+						}
+						if (inputLine.equals("RELOAD")) {
+							RLicDataHolder.getInstance().loadConfig();
+							outputLine="RELOAD OK";
+							break;
+						}
+						
 					}
 					out.println(outputLine);
 					log.info(String.format("%1$s;%2$s;%3$s",(Object[])new String[]{IP,inputLine,outputLine}));
@@ -57,6 +62,21 @@ public class RLicServerThread extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private String checkUser(String inputLine, RLicToken tkn) {
+		String outputLine;
+		outputLine = "ACCESS DENIED";
+		String userName = inputLine.split(" ")[1];
+		if (tkn != null) {
+			for (String name : tkn.getUsers()) {
+				if (name.equals(userName)){
+					outputLine = "ACCESS GRANTED";
+					break;
+				}
+			}
+		}
+		return outputLine;
 	}
 
 	private RLicToken getTokenByAddress() {
