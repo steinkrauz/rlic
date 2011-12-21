@@ -1,6 +1,7 @@
 package com.scac.RLicServer;
 
 import java.net.*;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.io.*;
 
@@ -8,7 +9,7 @@ import org.apache.log4j.*;
 
 public class RLicServerThread extends Thread {
 	private Socket socket = null;
-	private String IP; 
+	private String IP;
 
 	public RLicServerThread(Socket socket) {
 		super("RLicServerThread");
@@ -18,12 +19,12 @@ public class RLicServerThread extends Thread {
 	public void run() {
 
 		try {
-			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			RLicWriter out = new RLicWriter(socket.getOutputStream(), true);
+			RLicReader in = new RLicReader(new InputStreamReader(socket.getInputStream()));
 			String inputLine, outputLine = null;
-			
+
 			RLicToken tkn = getTokenByAddress();
-			
+
 			Logger log = Logger.getLogger("com.scac.rlic");
 
 			try {
@@ -40,13 +41,14 @@ public class RLicServerThread extends Thread {
 						}
 						if (inputLine.equals("RELOAD")) {
 							RLicDataHolder.getInstance().loadConfig();
-							outputLine="RELOAD OK";
+							outputLine = "RELOAD OK";
 							break;
 						}
-						
+
 					}
 					out.println(outputLine);
-					log.info(String.format("%1$s;%2$s;%3$s",(Object[])new String[]{IP,inputLine,outputLine}));
+					log.info(MessageFormat.format("{0};{1};{2}", (Object[]) new String[] {
+									IP, inputLine, outputLine }));
 				}
 				out.close();
 				in.close();
@@ -57,7 +59,6 @@ public class RLicServerThread extends Thread {
 				} else
 					log.warn(ex.getMessage());
 			}
-			
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -71,9 +72,9 @@ public class RLicServerThread extends Thread {
 		if (tkn != null) {
 			String name;
 			ArrayList Users = tkn.getUsers();
-			for (int i=0;i<Users.size();i++) {
+			for (int i = 0; i < Users.size(); i++) {
 				name = (String) Users.get(i);
-				if (name.equals(userName)){
+				if (name.equals(userName)) {
 					outputLine = "ACCESS GRANTED";
 					break;
 				}
@@ -83,13 +84,14 @@ public class RLicServerThread extends Thread {
 	}
 
 	private RLicToken getTokenByAddress() {
-		IP = ((InetSocketAddress) socket.getRemoteSocketAddress()).getAddress().getHostAddress();
+		IP = ((InetSocketAddress) socket.getRemoteSocketAddress()).getAddress()
+				.getHostAddress();
 		RLicDataHolder dh = RLicDataHolder.getInstance();
 		ArrayList tkns = dh.getCfg().getTokens();
 		RLicToken tkn = null;
 		RLicToken tk;
-		for (int i=0;i<tkns.size();i++){
-			tk = (RLicToken)tkns.get(i);
+		for (int i = 0; i < tkns.size(); i++) {
+			tk = (RLicToken) tkns.get(i);
 			if (IP.startsWith(tk.getNetMask()))
 				tkn = tk;
 		}

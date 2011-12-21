@@ -14,14 +14,13 @@ public class RLicAdmin {
 	private static int port;
 	private static String verb;
 
-	static PrintWriter out = null;
-	static BufferedReader in = null;
+	static RLicWriter out = null;
+	static RLicReader in = null;
 
 	public static void main(String[] args) {
 
 		if (getArgs(args) == false) {
-			System.out.println("Usage: RLicAdmin verb host port");
-			System.out.println("\tverb ::= [shutdown, reload, test, autotest]");
+			printUsage();
 			return;
 		}
 
@@ -42,7 +41,14 @@ public class RLicAdmin {
 				System.out.println("Not implemented yet");
 				break;
 			}
+			printUsage();
+			return;
 		}
+	}
+
+	private static void printUsage() {
+		System.out.println("Usage: RLicAdmin verb host port");
+		System.out.println("\tverb ::= [shutdown, reload, test, autotest]");
 	}
 
 	private static void doShutdown() {
@@ -110,8 +116,8 @@ public class RLicAdmin {
 	private static void setupSocket() {
 		try {
 			clSocket = new Socket(host, port);
-			out = new PrintWriter(clSocket.getOutputStream(), true);
-			in = new BufferedReader(new InputStreamReader(clSocket
+			out = new  RLicWriter(clSocket.getOutputStream(), true);
+			in = new RLicReader(new InputStreamReader(clSocket
 					.getInputStream()));
 		} catch (UnknownHostException e) {
 			System.err.println("Don't know about host: " + host);
