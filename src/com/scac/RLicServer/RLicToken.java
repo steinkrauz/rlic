@@ -7,27 +7,29 @@ public final class RLicToken
    /** Constructor. */
    public RLicToken()
    {
-      _Users = new ArrayList<String>();
+      _Users = new ArrayList();
    }
    /** Users
    *is a field to store all the allowed logins for the given IP subnet
    *Should be filled explicitly from XML-file
    */
-   private ArrayList<String> _Users;
-   public ArrayList<String> getUsers(){
+   private ArrayList _Users;
+   public ArrayList getUsers(){
  	return _Users;
    }
-   public void setUsers(ArrayList<String> newUsers){
+   public void setUsers(ArrayList newUsers){
       _Users = newUsers;
    }
    public boolean hasUser(String login){
       boolean res = false;
-      for (String name :_Users) {
-      	if (login.equals(name)) {
-      	   res = true;
-      	   break;
-      	}
-      }
+      String name;
+      for (int i = 0; i < _Users.size(); i++) {
+			name = (String) _Users.get(i);
+			if (login.equals(name)) {
+				res = true;
+				break;
+			}
+		}
       return res;
    }
    private String NetMask;

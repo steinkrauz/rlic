@@ -22,7 +22,7 @@ public class RLicServer {
 		try {
 			serverSocket = new ServerSocket(cfg.getServerPort());
 		} catch (IOException e) {
-			System.err.printf("Could not listen on port: %1$d\n",cfg.getServerPort());
+			System.err.printf("Could not listen on port: %1$d\n",new Object[]{new Integer(cfg.getServerPort())});
 			System.exit(-1);
 		}
 

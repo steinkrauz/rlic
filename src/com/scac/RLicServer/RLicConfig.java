@@ -9,7 +9,7 @@ public final class RLicConfig
    /** Constructor. */
    public RLicConfig()
    {
-	   _Tokens = new ArrayList<RLicToken>();
+	   _Tokens = new ArrayList();
    }
 
    private int _ServerPort;
@@ -28,11 +28,11 @@ public final class RLicConfig
    	_LogPath = path;
    }
 
-   private ArrayList<RLicToken> _Tokens;
-   public  ArrayList<RLicToken> getTokens(){
+   private ArrayList _Tokens;
+   public  ArrayList getTokens(){
    	return _Tokens;
    }
-   public void setTokens(ArrayList<RLicToken> data){
+   public void setTokens(ArrayList data){
    	_Tokens = data;
    }
 }

@@ -19,10 +19,10 @@ public class RLicCfgGen {
 		cfg.setLogPath("connect.log");
 		RLicToken tkn = new RLicToken();
 		tkn.setNetMask("10.1.1.50");
-		ArrayList<String> usr = new ArrayList<String>();
+		ArrayList usr = new ArrayList();
 		usr.add("duce");usr.add("qqqq");usr.add("www");
 		tkn.setUsers(usr);
-		ArrayList<RLicToken> tkns = new ArrayList<RLicToken>();
+		ArrayList tkns = new ArrayList();
 		tkns.add(tkn);
 		cfg.setTokens(tkns);
 		try {

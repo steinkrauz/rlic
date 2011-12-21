@@ -69,7 +69,10 @@ public class RLicServerThread extends Thread {
 		outputLine = "ACCESS DENIED";
 		String userName = inputLine.split(" ")[1];
 		if (tkn != null) {
-			for (String name : tkn.getUsers()) {
+			String name;
+			ArrayList Users = tkn.getUsers();
+			for (int i=0;i<Users.size();i++) {
+				name = (String) Users.get(i);
 				if (name.equals(userName)){
 					outputLine = "ACCESS GRANTED";
 					break;
@@ -82,9 +85,11 @@ public class RLicServerThread extends Thread {
 	private RLicToken getTokenByAddress() {
 		IP = ((InetSocketAddress) socket.getRemoteSocketAddress()).getAddress().getHostAddress();
 		RLicDataHolder dh = RLicDataHolder.getInstance();
-		ArrayList<RLicToken> tkns = dh.getCfg().getTokens();
+		ArrayList tkns = dh.getCfg().getTokens();
 		RLicToken tkn = null;
-		for (RLicToken tk : tkns){
+		RLicToken tk;
+		for (int i=0;i<tkns.size();i++){
+			tk = (RLicToken)tkns.get(i);
 			if (IP.startsWith(tk.getNetMask()))
 				tkn = tk;
 		}
