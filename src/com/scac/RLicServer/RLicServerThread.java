@@ -33,8 +33,8 @@ public class RLicServerThread extends Thread {
 					while (true) {
 						if (cmds[0].equals("USER")) {
 							outputLine = checkUser(cmds[1], tkn);
-							log.info(MessageFormat.format("{0};{1};{2}", (Object[]) new String[] {
-									IP, cmds[1], outputLine }));
+							log.info(MessageFormat.format("{0};{1};{2};{3}", (Object[]) new String[] {
+									IP, cmds[1], cmds[2], outputLine }));
 							break;
 						}
 						if (cmds[0].equals("QUIT")) {

@@ -82,13 +82,14 @@ public class RLicAdmin {
 				System.in));
 		String fromServer = null;
 		String fromUser = null;
+		String osUser = System.getProperty("user.name");  
 		System.out.println("Type 'end' to exit the test");
 		do {
 			setupSocket();
 			try {
 				System.out.print("client>");
 				fromUser = stdIn.readLine();
-				out.println("USER "+fromUser);
+				out.println("USER "+fromUser+" "+osUser);
 				fromServer = in.readLine();
 				if (fromServer != null)
 					System.out.println("server> " + fromServer);
