@@ -25,7 +25,8 @@ public class RLicServer {
 			System.err.printf("Could not listen on port: %1$d\n",new Object[]{new Integer(cfg.getServerPort())});
 			System.exit(-1);
 		}
-
+		
+		System.out.println("RLicServer is online");
 		while (listening)
 			new RLicServerThread(serverSocket.accept()).start();
 

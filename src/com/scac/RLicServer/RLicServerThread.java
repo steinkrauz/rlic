@@ -29,26 +29,30 @@ public class RLicServerThread extends Thread {
 
 			try {
 				if ((inputLine = in.readLine()) != null) {
+					String cmds[] = inputLine.split(" ");
 					while (true) {
-						if (inputLine.startsWith("USER")) {
-							outputLine = checkUser(inputLine, tkn);
+						if (cmds[0].equals("USER")) {
+							outputLine = checkUser(cmds[1], tkn);
+							log.info(MessageFormat.format("{0};{1};{2}", (Object[]) new String[] {
+									IP, cmds[1], outputLine }));
 							break;
 						}
-						if (inputLine.equals("QUIT")) {
+						if (cmds[0].equals("QUIT")) {
+							log.info(MessageFormat.format("{0};{1}", (Object[]) new String[] {IP, cmds[0]}));
 							socket.close();
 							System.exit(0);
 							break;
 						}
-						if (inputLine.equals("RELOAD")) {
+						if (cmds[0].equals("RELOAD")) {
+							log.info(MessageFormat.format("{0};{1}", (Object[]) new String[] {IP, cmds[0]}));
 							RLicDataHolder.getInstance().loadConfig();
 							outputLine = "RELOAD OK";
+							log.info(MessageFormat.format("{0};{1}", (Object[]) new String[] {IP, outputLine}));
 							break;
 						}
 
 					}
 					out.println(outputLine);
-					log.info(MessageFormat.format("{0};{1};{2}", (Object[]) new String[] {
-									IP, inputLine, outputLine }));
 				}
 				out.close();
 				in.close();
@@ -65,10 +69,9 @@ public class RLicServerThread extends Thread {
 		}
 	}
 
-	private String checkUser(String inputLine, RLicToken tkn) {
+	private String checkUser(String userName, RLicToken tkn) {
 		String outputLine;
 		outputLine = "ACCESS DENIED";
-		String userName = inputLine.split(" ")[1];
 		if (tkn != null) {
 			String name;
 			ArrayList Users = tkn.getUsers();
