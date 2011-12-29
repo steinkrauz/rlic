@@ -1,6 +1,7 @@
 package com.scac.RLicServer;
 
 import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
 import java.io.*;
 
 /** class RLicDataHolder. */
@@ -26,6 +27,14 @@ public final class RLicDataHolder {
 		setCfg((RLicConfig) decoder.readObject());
 		decoder.close();
 
+	}
+	
+	public void saveConfig() throws FileNotFoundException{
+		XMLEncoder e = new XMLEncoder(new BufferedOutputStream(
+				new FileOutputStream("rlicsettingsxml")));
+		e.writeObject(cfg);
+		e.close();
+		
 	}
 
 	public RLicConfig getCfg() {
