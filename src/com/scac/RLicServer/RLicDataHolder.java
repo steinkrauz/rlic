@@ -31,7 +31,7 @@ public final class RLicDataHolder {
 	
 	public void saveConfig() throws FileNotFoundException{
 		XMLEncoder e = new XMLEncoder(new BufferedOutputStream(
-				new FileOutputStream("rlicsettingsxml")));
+				new FileOutputStream("rlicsettings.xml")));
 		e.writeObject(cfg);
 		e.close();
 		
