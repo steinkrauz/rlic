@@ -10,6 +10,7 @@ public final class RLicConfig {
 	/** Constructor. */
 	public RLicConfig() {
 		_Tokens = new ArrayList();
+		_CfgKey = "d";
 	}
 
 	private int _ServerPort;
@@ -30,6 +31,16 @@ public final class RLicConfig {
 
 	public void setLogPath(String path) {
 		_LogPath = path;
+	}
+	
+	private String _CfgKey;
+	
+	public String getCfgKey(){
+		return _CfgKey;
+	}
+	
+	public void setCfgKey(String key){
+		_CfgKey = key;
 	}
 
 	private ArrayList _Tokens;

@@ -11,7 +11,6 @@ public final class RLicDataHolder {
 	}
 	
 	//private static String CFG_KEY="df345Kna2D"; 
-	private static String CFG_KEY="d";
 
 	private static RLicDataHolder instance = null;
 
@@ -28,7 +27,7 @@ public final class RLicDataHolder {
 	}
 	
 	public void switchEditMode(boolean onoff, String Key){
-		if (CFG_KEY.equals(Key)){
+		if (cfg.getCfgKey().equals(Key)){
 			_EditMode = onoff;
 		}
 	}
