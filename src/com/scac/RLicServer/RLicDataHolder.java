@@ -9,6 +9,9 @@ public final class RLicDataHolder {
 	/** Constructor. */
 	private RLicDataHolder() {
 	}
+	
+	//private static String CFG_KEY="df345Kna2D"; 
+	private static String CFG_KEY="d";
 
 	private static RLicDataHolder instance = null;
 
@@ -17,6 +20,17 @@ public final class RLicDataHolder {
 			instance = new RLicDataHolder();
 		}
 		return instance;
+	}
+	
+	private boolean _EditMode;
+	public boolean getEditMode(){
+		return _EditMode;
+	}
+	
+	public void switchEditMode(boolean onoff, String Key){
+		if (CFG_KEY.equals(Key)){
+			_EditMode = onoff;
+		}
 	}
 
 	private RLicConfig cfg;

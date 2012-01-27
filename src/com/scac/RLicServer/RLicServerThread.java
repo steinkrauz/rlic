@@ -50,6 +50,26 @@ public class RLicServerThread extends Thread {
 							log.info(MessageFormat.format("{0};{1}", (Object[]) new String[] {IP, outputLine}));
 							break;
 						}
+						if (cmds[0].equals("CFG")){
+							log.info(MessageFormat.format("{0};{1};{2}", (Object[]) new String[] {IP, cmds[0], cmds[1]}));
+							if (cmds[1].equals("ON"))
+								RLicDataHolder.getInstance().switchEditMode(true, cmds[2]);
+							else
+								if (cmds[1].equals("OFF"))
+									RLicDataHolder.getInstance().switchEditMode(false, cmds[2]);
+							if (RLicDataHolder.getInstance().getEditMode())
+								outputLine = "EDIT MODE ON";
+							else
+								outputLine = "EDIT MODE OFF";
+							log.info(MessageFormat.format("{0};{1}", (Object[]) new String[] {IP, outputLine}));
+							break;
+						}
+						if (RLicDataHolder.getInstance().getEditMode()){
+							outputLine = parseCfgCommands(cmds);
+							if (outputLine.length()>1) break;
+						}
+						outputLine = "ILLEGAL COMMAND";
+						break;
 
 					}
 					out.println(outputLine);
@@ -67,6 +87,97 @@ public class RLicServerThread extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private String parseCfgCommands(String[] cmds){
+		String outputLine = "";
+		while (true){
+			if (cmds[0].equals("LISTNW")){
+				RLicConfig cfg = RLicDataHolder.getInstance().getCfg();
+				ArrayList tkns = cfg.getTokens();
+				RLicToken tkn = null;
+				for (int i=0;i<tkns.size();i++){
+					tkn = (RLicToken) tkns.get(i);
+					outputLine+=tkn.getNetMask()+"\n";
+				}
+				break;
+			}
+			if (cmds[0].equals("LISTUSR")){
+				if (cmds.length<2) {outputLine="NO NETWORK GIVEN";break;}
+				RLicToken tkn = getTokenByMask(cmds[1]);
+				if (tkn==null) {
+					outputLine = "NETWORK "+cmds[1]+" NOT FOUND";
+					break;
+				}
+				String name;
+				ArrayList Users = tkn.getUsers();
+				for (int i = 0; i < Users.size(); i++) {
+					name = (String) Users.get(i);
+					outputLine += name+"\n";
+					}
+				break;
+			}
+			if (cmds[0].equals("ADDNW")){
+				RLicConfig cfg = RLicDataHolder.getInstance().getCfg();
+				ArrayList tkns = cfg.getTokens();
+				RLicToken tkn = new RLicToken();
+				tkn.setNetMask(cmds[1]);
+				tkns.add(tkn);
+				outputLine = cmds[1]+" ADDED";
+				break;
+			}
+			if (cmds[0].equals("ADDUSR")){
+				if (cmds.length<3) {outputLine="NO NETWORK OR USER GIVEN";break;}
+				RLicToken tkn = getTokenByMask(cmds[1]);
+				if (tkn==null) {
+					outputLine = "NETWORK "+cmds[1]+" NOT FOUND";
+					break;
+				}
+				tkn.getUsers().add(cmds[2]);
+				outputLine = "USER ADDED";
+				break;
+			}
+			if (cmds[0].equals("REMNW")){
+				RLicConfig cfg = RLicDataHolder.getInstance().getCfg();
+				ArrayList tkns = cfg.getTokens();
+				RLicToken tkn = getTokenByMask(cmds[1]);
+				tkns.remove(tkn);
+				outputLine = cmds[1]+" REMOVED";
+				break;
+			}
+			if (cmds[0].equals("REMUSR")){
+				if (cmds.length<3) {outputLine="NO NETWORK OR USER GIVEN";break;}
+				RLicToken tkn = getTokenByMask(cmds[1]);
+				if (tkn==null) {
+					outputLine = "NETWORK "+cmds[1]+" NOT FOUND";
+					break;
+				}
+				tkn.getUsers().remove(cmds[2]);
+				outputLine = "USER REMOVED";
+				break;
+			}
+			if (cmds[0].equals("SAVE")){
+				try {
+					RLicDataHolder.getInstance().saveConfig();
+				} catch (FileNotFoundException e) {
+					outputLine = e.getMessage();
+					break;
+				}
+				outputLine = "CONFIG SAVED";
+			}
+			if (cmds[0].equals("LOAD")){  //to be able start anew if messed
+				try {
+					RLicDataHolder.getInstance().loadConfig();
+				} catch (FileNotFoundException e) {
+					outputLine = e.getMessage();
+					break;
+				}
+				outputLine = "CONFIG LOADED";
+				break;
+			}
+			break;
+		}
+		return outputLine;
 	}
 
 	private String checkUser(String userName, RLicToken tkn) {
@@ -89,13 +200,17 @@ public class RLicServerThread extends Thread {
 	private RLicToken getTokenByAddress() {
 		IP = ((InetSocketAddress) socket.getRemoteSocketAddress()).getAddress()
 				.getHostAddress();
+		return getTokenByMask(IP);
+	}
+	
+	private RLicToken getTokenByMask(String mask){
 		RLicDataHolder dh = RLicDataHolder.getInstance();
 		ArrayList tkns = dh.getCfg().getTokens();
 		RLicToken tkn = null;
 		RLicToken tk;
 		for (int i = 0; i < tkns.size(); i++) {
 			tk = (RLicToken) tkns.get(i);
-			if (IP.startsWith(tk.getNetMask()))
+			if (mask.startsWith(tk.getNetMask()))
 				tkn = tk;
 		}
 		return tkn;

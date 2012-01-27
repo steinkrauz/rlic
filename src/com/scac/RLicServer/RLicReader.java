@@ -13,7 +13,10 @@ public class RLicReader extends BufferedReader {
 
 	public String readLine() throws IOException {
 		String in = super.readLine();
-		return RLicUtils.strDecode(in);
+		if (in != null)
+			return RLicUtils.strDecode(in);
+		else
+			return "";
 	}
 
 }

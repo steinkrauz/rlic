@@ -37,6 +37,10 @@ public class RLicAdmin {
 				doTest();
 				break;
 			}
+			if (verb.equals("console")) {
+				doConsole();
+				break;
+			}
 			if (verb.equals("autotest")) {
 				System.out.println("Not implemented yet");
 				break;
@@ -48,7 +52,7 @@ public class RLicAdmin {
 
 	private static void printUsage() {
 		System.out.println("Usage: RLicAdmin verb host port");
-		System.out.println("\tverb ::= [shutdown, reload, test, autotest]");
+		System.out.println("\tverb ::= [shutdown, reload, test, console, autotest]");
 	}
 
 	private static void doShutdown() {
@@ -77,6 +81,36 @@ public class RLicAdmin {
 		}
 	}
 
+	private static void doConsole(){
+		BufferedReader stdIn = new BufferedReader(new InputStreamReader(
+				System.in));
+		String fromServer = null;
+		String fromUser = null;
+		System.out.println("Type 'exit' to leave the console");
+		do {
+			setupSocket();
+			try {
+				System.out.print(">");
+				fromUser = stdIn.readLine();
+				if (fromUser.equals("exit")) break;
+				out.println(fromUser);
+				fromServer = in.readLine();
+				if (fromServer != null)
+					System.out.println(fromServer);
+				closeSocket();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} while (true);
+		try {
+			stdIn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	private static void doTest() {
 		BufferedReader stdIn = new BufferedReader(new InputStreamReader(
 				System.in));
