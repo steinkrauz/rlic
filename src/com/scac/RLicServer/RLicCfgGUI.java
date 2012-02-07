@@ -32,7 +32,6 @@ public class RLicCfgGUI extends JFrame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		new RLicCfgGUI();
 
 	}
@@ -52,7 +51,6 @@ public class RLicCfgGUI extends JFrame {
 		try {
 			dh.loadConfig();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -68,7 +66,6 @@ public class RLicCfgGUI extends JFrame {
 		c.weighty = 1.0;
 		c.gridx = 0;
 		c.gridy = 0;
-		// c.anchor = GridBagConstraints.PAGE_START;
 		add(TreeView, c);
 
 		AddBtn = new JButton("Add");
@@ -82,8 +79,6 @@ public class RLicCfgGUI extends JFrame {
 		c.gridwidth = 1;
 		c.gridx = 0;
 		c.gridy = 1;
-		// c.anchor = GridBagConstraints.PAGE_END;
-		add(AddBtn, c);
 		c.gridx = 1;
 		add(RemBtn, c);
 		c.gridx = 2;
