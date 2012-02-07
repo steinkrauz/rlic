@@ -6,7 +6,7 @@ import java.net.*;
 /**
  * Application to perform administration tasks<br>
  * General syntax: RLicAdmin <i>verb host port</i><br>
- * verb ::= [shutdown, reload, test, autotest]
+ * verb ::= [shutdown, reload, test, console, auto]
  */
 public class RLicAdmin {
 	private static Socket clSocket = null;
@@ -41,7 +41,7 @@ public class RLicAdmin {
 				doConsole();
 				break;
 			}
-			if (verb.equals("autotest")) {
+			if (verb.equals("auto")) {
 				System.out.println("Not implemented yet");
 				break;
 			}
