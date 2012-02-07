@@ -42,12 +42,40 @@ public class RLicAdmin {
 				break;
 			}
 			if (verb.equals("auto")) {
-				System.out.println("Not implemented yet");
+				doAuto();
 				break;
 			}
 			printUsage();
 			return;
 		}
+	}
+
+	private static void doAuto() {
+		BufferedReader input;
+		BufferedWriter log;
+		String cmdline, fromServer; 
+		try {
+			input = new BufferedReader(new FileReader("input.txt"));
+			log = new BufferedWriter(new FileWriter("admin.log"));
+			while((cmdline = input.readLine())!=null){
+				setupSocket();
+				log.write(">>"+cmdline);log.newLine();
+				out.println(cmdline);
+				fromServer = in.readLine();
+				log.write(fromServer);log.newLine();
+				closeSocket();
+			}
+			input.close();
+			log.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		
 	}
 
 	private static void printUsage() {
@@ -70,7 +98,7 @@ public class RLicAdmin {
 	private static void doReload() {
 		setupSocket();
 		try {
-			out.println("RELOAD");
+			out.println("RELOAD");	
 			String fromServer = in.readLine();
 			if (fromServer != null)
 				System.out.println( fromServer);
