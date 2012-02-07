@@ -3,6 +3,7 @@ package com.scac.RLicServer;
 import java.util.ArrayList;
 
 /** class RLicToken.
+ * Holds user list for specified network
  */
 public final class RLicToken {
 	/** Constructor. */

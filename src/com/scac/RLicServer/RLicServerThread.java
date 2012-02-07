@@ -7,6 +7,10 @@ import java.io.*;
 
 import org.apache.log4j.*;
 
+/**
+ * @author infodba
+ * Class to serve a connection
+ */
 public class RLicServerThread extends Thread {
 	private Socket socket = null;
 	private String IP;
@@ -89,6 +93,11 @@ public class RLicServerThread extends Thread {
 		}
 	}
 	
+	/**
+	 * A routine to manage extended configuration syntax
+	 * @param cmds input string to parse and send
+	 * @return an answer from the server
+	 */
 	private String parseCfgCommands(String[] cmds){
 		String outputLine = "";
 		while (true){
@@ -180,6 +189,12 @@ public class RLicServerThread extends Thread {
 		return outputLine;
 	}
 
+	/**
+	 * Check user against given network
+	 * @param userName
+	 * @param tkn - network's token
+	 * @return verdict ACCESS DENIED or ACCESS GRANTED
+	 */
 	private String checkUser(String userName, RLicToken tkn) {
 		String outputLine;
 		outputLine = "ACCESS DENIED";
@@ -197,12 +212,19 @@ public class RLicServerThread extends Thread {
 		return outputLine;
 	}
 
+	/**
+	 * @return token that corresponds current socket
+	 */
 	private RLicToken getTokenByAddress() {
 		IP = ((InetSocketAddress) socket.getRemoteSocketAddress()).getAddress()
 				.getHostAddress();
 		return getTokenByMask(IP);
 	}
 	
+	/**Finds corresponding token according with network given. Is several tokens are fit, the last one will be used
+	 * @param mask Network as string. Could be partial IP (123.45.)
+	 * @return token
+	 */
 	private RLicToken getTokenByMask(String mask){
 		RLicDataHolder dh = RLicDataHolder.getInstance();
 		ArrayList tkns = dh.getCfg().getTokens();

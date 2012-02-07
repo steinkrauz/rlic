@@ -1,6 +1,10 @@
 package com.scac.RLicServer;
 
 
+/**
+ * @author duce
+ * Routines used to scramble the text exchange between server and client.
+ */
 public class RLicUtils {
 	public static String strEncode(String arg) {
 		return toHex(Rot13(arg));

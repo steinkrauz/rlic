@@ -4,11 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
+/**
+ * @author duce
+ * The RLicReader provides a simple interface to read date from scrambled stream
+ */
 public class RLicReader extends BufferedReader {
 
 	public RLicReader(Reader arg0) {
 		super(arg0);
-		// TODO Auto-generated constructor stub
 	}
 
 	public String readLine() throws IOException {

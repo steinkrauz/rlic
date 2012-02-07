@@ -80,7 +80,7 @@ public class RLicAdmin {
 
 	private static void printUsage() {
 		System.out.println("Usage: RLicAdmin verb host port");
-		System.out.println("\tverb ::= [shutdown, reload, test, console, autotest]");
+		System.out.println("\tverb ::= [shutdown, reload, test, console, auto]");
 	}
 
 	private static void doShutdown() {
@@ -90,7 +90,6 @@ public class RLicAdmin {
 			System.out.println("Shutdown command was sent successfully");
 			closeSocket();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -104,7 +103,6 @@ public class RLicAdmin {
 				System.out.println( fromServer);
 			closeSocket();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -127,14 +125,12 @@ public class RLicAdmin {
 					System.out.println(fromServer);
 				closeSocket();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} while (true);
 		try {
 			stdIn.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -157,14 +153,12 @@ public class RLicAdmin {
 					System.out.println("server> " + fromServer);
 				closeSocket();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} while (!fromUser.equals("end"));
 		try {
 			stdIn.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

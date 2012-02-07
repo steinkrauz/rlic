@@ -5,7 +5,7 @@ package com.scac.RLicServer;
 
 /**
  * @author duce
- *
+ * Main class to serve the requests from clients
  */
 import java.net.*;
 import java.io.*;
