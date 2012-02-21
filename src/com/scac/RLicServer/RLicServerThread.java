@@ -199,15 +199,8 @@ public class RLicServerThread extends Thread {
 		String outputLine;
 		outputLine = "ACCESS DENIED";
 		if (tkn != null) {
-			String name;
-			ArrayList Users = tkn.getUsers();
-			for (int i = 0; i < Users.size(); i++) {
-				name = (String) Users.get(i);
-				if (name.equals(userName)) {
-					outputLine = "ACCESS GRANTED";
-					break;
-				}
-			}
+			if (tkn.hasUser(userName)) 
+			   outputLine = "ACCESS GRANTED";
 		}
 		return outputLine;
 	}
