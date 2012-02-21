@@ -79,6 +79,7 @@ public class RLicCfgGUI extends JFrame {
 		c.gridwidth = 1;
 		c.gridx = 0;
 		c.gridy = 1;
+		add(AddBtn, c);
 		c.gridx = 1;
 		add(RemBtn, c);
 		c.gridx = 2;
