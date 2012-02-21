@@ -30,7 +30,7 @@ public final class RLicToken {
 		String name;
 		for (int i = 0; i < _Users.size(); i++) {
 			name = (String) _Users.get(i);
-			if (login.equals(name)) {
+			if (login.equalsIgnoreCase(name)) {
 				res = true;
 				break;
 			}
