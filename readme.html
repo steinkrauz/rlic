@@ -1,0 +1,36 @@
+<html><head><title>RLicServer description</title></head><body>
+<h1>PROTOCOL</h1>
+<p>RLicServer supports following commands
+<ul>
+	<li>USER &lt;login&gt; &lt;os user&gt;
+	<li>RELOAD
+	<li>QUIT
+	<li>CFG [ON|OFF] &lt;key&gt;
+</ul>
+<h2>USER</h2>
+	<p>Server checks the given login agains its configuration and returns 'ACCESS DENIED' if the login is not allowed from client's IP or 'ACCESS GRANTED' otherwise. The 'os user' parameter is meant to be put in log.
+<h2>RELOAD</h2>
+	<p>Causes the server to reread its configuration. Should be used with admin utility only.
+<h2>QIUT</h2>
+<p>Terminates the server. Should be used with admin utility only.
+<h2>CFG</h2>
+<p>Enables or disables configuration commands. 
+<h1>CONFIGURATION PROTOCOL</h1>
+<p>RLicServer supports following configuration commands
+<ul>
+	<li>LISTNW
+	<li>LISTUSER &lt;network&gt;
+	<li>ADDNW &lt;network&gt;
+	<li>ADDUSR &lt;network&gt; &lt;login&gt;
+	<li>REMNW &lt;network&gt;
+	<li>REMUSR &lt;network&gt; &lt;login&gt;
+	<li>SAVE
+	<li>LOAD
+</ul>
+The names of commands are self-explanatory.
+<h1>CONNECTION</h1>
+<p>All data exchange between server and client is assumed to be encrypted. To communicate with server one should use supplied RLicReader/RLicWriter classes that are deriviates from BufferedReader and PringWriter.
+<h1>FILES</h1>
+<ul><li>rlicsettings.xml &mdash; contains configuration data for the server. File format is self-explaining. You can exec RLicCfgGen to get a working example if current one is badly corrupted.
+	<li>log4j.xml &mdash; standard log4j configuration. See teh Internets for help.
+</body></html>
